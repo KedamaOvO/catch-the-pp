@@ -5,9 +5,11 @@ from osu.ctb.difficulty import Difficulty
 from ppCalc import calculate_pp
 
 if len(sys.argv) <= 1:
-    beatmap = Beatmap("test.osu") #Yes... this be my test file (Will remove when project is done)
+    with open("test.osu") as file:
+        beatmap = Beatmap(file.read()) #Yes... this be my test file (Will remove when project is done)
 else:
-    beatmap = Beatmap(sys.argv[1])
+    with open(sys.argv[1]) as file:
+        beatmap = Beatmap(file.read())
 
 if len(sys.argv) >= 3:
     mods = int(sys.argv[2])

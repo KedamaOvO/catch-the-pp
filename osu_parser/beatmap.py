@@ -1,16 +1,17 @@
 from osu_parser import mathhelper
 from osu_parser.hitobject import HitObject
+from io import StringIO
 
 class Beatmap(object):
     """
     Beatmap object for beatmap parsing and handling
     """
 
-    def __init__(self, file_name):
+    def __init__(self, content):
         """
-        file_name -- Directory for beatmap file (.osu)
+        content -- beatmap content (.osu)
         """
-        self.file_name = file_name
+        self.content = content
         self.version = -1   #Unknown by default
         self.header = -1
         self.difficulty = {}
@@ -34,12 +35,12 @@ class Beatmap(object):
         """
         Parses beatmap file line by line by passing each line into parse_line.
         """
-        with open(self.file_name, encoding="utf8") as file_stream:
+        with StringIO(self.content) as stream:
             ver_line = ""
             while len(ver_line) < 2: #Find the line where beatmap version is spesified (normaly first line)
-                ver_line = file_stream.readline()
+                ver_line = stream.readline()
             self.version = int(''.join(list(filter(str.isdigit, ver_line))))  #Set version
-            for line in file_stream:
+            for line in stream:
                 self.parse_line(line.replace("\n", ""))
 
     def parse_line(self, line):
